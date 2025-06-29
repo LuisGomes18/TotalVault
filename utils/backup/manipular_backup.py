@@ -59,6 +59,7 @@ def load_backup_information(id: str):
     project_path = os.getcwd()
     backup_folder = os.path.join(project_path, 'core', 'backup')
     id_file = os.path.join(backup_folder, f'{id}.json')
+    verify_file_and_folder(id)
 
     try:
         with open(id_file, 'r', encoding='utf-8') as file:
@@ -90,6 +91,7 @@ def save_backup_information(id: str, data: dict):
     project_path = os.getcwd()
     backup_folder = os.path.join(project_path, 'core', 'backup')
     id_file = os.path.join(backup_folder, f'{id}.json')
+    verify_file_and_folder(id)
 
     if data is None:
         raise ValueError('data is None')
