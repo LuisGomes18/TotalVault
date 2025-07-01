@@ -19,7 +19,8 @@ def verify_file_and_folder(id) -> None:
     id_file = os.path.join(backup_folder, f'{id}.json')
     data = {
         'id': None,
-        'timestamp': None,
+        'date': None,
+        'time': None,
         'temporary_folder': None,
         'source': None,
         'destination': None
@@ -32,7 +33,7 @@ def verify_file_and_folder(id) -> None:
     if not os.path.exists(id_file):
         try:
             with open(id_file, 'w', encoding='utf-8') as file:
-                json.dump(data, file)
+                json.dump(data, file, ensure_ascii=False, indent=4)
         except json.JSONDecodeError:
             raise ValueError('Error decoding the JSON file')
         except Exception as error:
@@ -102,7 +103,7 @@ def save_backup_information(id: str, data: dict):
     try:
         os.makedirs(backup_folder, exist_ok=True)
         with open(id_file, 'w', encoding='utf-8') as file:
-            json.dump(data, file)
+            json.dump(data, file, ensure_ascii=False, indent=4)
     except FileNotFoundError:
         raise FileNotFoundError
     except json.JSONDecodeError:
