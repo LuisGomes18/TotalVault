@@ -24,7 +24,7 @@ def check_file_and_folder() -> None:
             with open(ids_file, 'w', encoding='utf-8') as file:
                 if file is None:
                     raise ValueError('ids.json file is null')
-                json.dump(data, file)
+                json.dump(data, file, ensure_ascii=False, indent=4)
         except json.JSONDecodeError:
             raise ValueError('Error decoding the JSON file')
         except Exception as error:
@@ -93,7 +93,7 @@ def save_ids(data: dict) -> None:
         with open(ids_file, 'w', encoding='utf-8') as file:
             if file is None:
                 raise ValueError('The ids.json file is null')
-            json.dump(data, file)
+            json.dump(data, file, ensure_ascii=False, indent=4)
     except FileNotFoundError:
         raise FileNotFoundError('ids.json file not found')
     except json.JSONDecodeError:
