@@ -1,19 +1,28 @@
 import os
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, 
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 
 def receive_destination() -> str:
+    logging.info('Receive backup destination')
     destination = input('Enter the backup destination: ')
 
     while destination is None or not isinstance(destination, str):
         destination = input('Enter the backup destination: ')
 
     if not os.path.exists(destination):
-        raise FileNotFoundError(f'The destination {destination} does not exist.')
+        logging.error('The destination does not exist.')
+        exit()
 
     return destination
 
 
 def receive_source() -> list:
+    logging.info('Receive backup source')
     source = input('Enter the backup source(s), separated by commas: ')
 
     while source is None or not isinstance(source, str):
@@ -28,6 +37,7 @@ def receive_source() -> list:
             source_list.append(item)
 
     except Exception as e:
-        raise Exception(f'Error processing the backup source: {e}')
+        logging.error('Error processing the backup source: %s', e)
+        exit()
 
     return source_list

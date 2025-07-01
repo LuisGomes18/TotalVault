@@ -1,6 +1,12 @@
 import json
 import os
+import logging
 
+
+logging.basicConfig(
+    level=logging.INFO, 
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 def check_file_and_folder() -> None:
     """
@@ -8,7 +14,7 @@ def check_file_and_folder() -> None:
     If the folder or file does not exist, they are created with an initial structure.
     Raises exceptions if there are issues creating the folder or file.
     """
-    print('Checking file and folder')
+    logging.info('Checking file and folder')
     project_path = os.getcwd()
     ids_folder = os.path.join(project_path, 'core', 'id')
     ids_file = os.path.join(ids_folder, 'ids.json')
@@ -26,9 +32,11 @@ def check_file_and_folder() -> None:
                     raise ValueError('ids.json file is null')
                 json.dump(data, file, ensure_ascii=False, indent=4)
         except json.JSONDecodeError:
-            raise ValueError('Error decoding the JSON file')
+            logging.error('Error decoding the JSON file')
+            exit()
         except Exception as error:
-            raise Exception(f'Error creating the ids.json file: {error}')
+            logging.error(f'Error creating the ids.json file: {error}')
+            exit()
 
 
 def load_ids() -> dict:
@@ -42,7 +50,7 @@ def load_ids() -> dict:
         ValueError: If the file content is not a valid dictionary or cannot be decoded.
         Exception: For any other unexpected errors.
     """
-    print('Loading IDs')
+    logging.info('Loading IDs')
     project_path = os.getcwd()
     ids_folder = os.path.join(project_path, 'core', 'id')
     ids_file = os.path.join(ids_folder, 'ids.json')
@@ -54,16 +62,21 @@ def load_ids() -> dict:
                 raise ValueError('The ids.json file is null')
             ids_info = json.load(file)
             if ids_info is None:
-                raise ValueError('ids_info is null')
+                logging.error('ids_info is null')
+                exit()
             if not isinstance(ids_info, dict):
-                raise ValueError('ids_info is not a dictionary')
+                logging.error('ids_info is not a dictionary')
+                exit()
             return ids_info
     except FileNotFoundError:
-        raise FileNotFoundError('ids.json file not found')
+        logging.error('ids.json file not found')
+        exit()
     except json.JSONDecodeError:
-        raise ValueError('Error decoding the JSON file')
+        logging.error('Error decoding the JSON file')
+        exit()
     except Exception as error:
-        raise Exception(f'Unexpected error loading the ids: {error}')
+        logging.error('Unexpected error loading the ids: %s', error)
+        exit()
 
 
 def save_ids(data: dict) -> None:
@@ -77,26 +90,32 @@ def save_ids(data: dict) -> None:
         FileNotFoundError: If the file does not exist.
         Exception: For any other unexpected errors during saving.
     """
-    print('Saving IDs')
+    logging.info('Saving IDs')
     project_path = os.getcwd()
     ids_folder = os.path.join(project_path, 'core', 'id')
     ids_file = os.path.join(ids_folder, 'ids.json')
     check_file_and_folder()
 
     if data is None:
-        raise ValueError('data is null')
+        logging.error('Data is null')
+        exit()
 
     if not isinstance(data, dict):
-        raise ValueError('data is not a dictionary')
+        logging.error('Data is not a dictionary')
+        exit()
 
     try:
         with open(ids_file, 'w', encoding='utf-8') as file:
             if file is None:
-                raise ValueError('The ids.json file is null')
+                logging.error('The ids.json file is null')
+                exit()
             json.dump(data, file, ensure_ascii=False, indent=4)
     except FileNotFoundError:
-        raise FileNotFoundError('ids.json file not found')
+        logging.error('ids.json file not found')
+        exit()
     except json.JSONDecodeError:
-        raise ValueError('Error decoding the JSON file')
+        logging.error('Error decoding the JSON file')
+        exit()
     except Exception as error:
-        raise Exception(f'Unexpected error saving the ids: {error}')
+        logging.error('Unexpected error saving the ids: %s', error)
+        exit()
