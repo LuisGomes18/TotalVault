@@ -4,21 +4,22 @@ import logging
 
 
 logging.basicConfig(
-    level=logging.INFO, 
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 
 def verify_file_and_folder(id: str) -> None:
     """
-    Checks if the backup folder and the backup file for the given id exist.
-    If the folder or file do not exist, they are created with default data.
+    Verifies the existence of the backup folder and a JSON file for the given ID.
+    If the backup folder does not exist, it is created. If the JSON file for the specified ID does not exist,
+    it is created with default data fields. Logs actions and errors during the process.
 
     Args:
-        id (str): The identifier for the backup file.
+        id (str): The identifier used to name the backup JSON file.
 
     Raises:
-        Exception: If there is an error creating the backup file.
+        SystemExit: If there is an error decoding JSON or creating the backup file.
     """
     logging.info('Verify file and folder')
     project_path = os.getcwd()
@@ -45,10 +46,10 @@ def verify_file_and_folder(id: str) -> None:
             logging.error('Error decoding the JSON file')
             exit()
         except Exception as error:
-            logging.error(f'Error creating the backup file: {error}')
+            logging.error('Error creating the backup file: %s', error)
             exit()
 
-        logging.info(f'Backup file {id} created successfully')
+        logging.info('Backup file created successfully')
 
 
 def load_backup_information(id: str) -> None:
@@ -86,7 +87,7 @@ def load_backup_information(id: str) -> None:
         logging.error('Error decoding the JSON file')
         exit()
     except Exception as error:
-        logging.error(f'Unexpected error loading the ids: {error}')
+        logging.error('Unexpected error loading the ids: %s', error)
         exit()
 
 
@@ -111,7 +112,7 @@ def save_backup_information(id: str, data: dict):
     if data is None:
         logging.error('data is None')
         exit()
-    
+
     if not isinstance(data, dict):
         logging.error('data is not a dictionary')
         exit()
@@ -126,5 +127,5 @@ def save_backup_information(id: str, data: dict):
         logging.error('Error decoding the JSON file')
         exit()
     except Exception as error:
-        logging.error(f'Unexpected error saving the ids: {error}')
+        logging.error('Unexpected error saving the ids: %s', error)
         exit()

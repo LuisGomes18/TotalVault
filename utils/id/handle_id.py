@@ -4,7 +4,7 @@ import logging
 
 
 logging.basicConfig(
-    level=logging.INFO, 
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
@@ -35,7 +35,7 @@ def check_file_and_folder() -> None:
             logging.error('Error decoding the JSON file')
             exit()
         except Exception as error:
-            logging.error(f'Error creating the ids.json file: {error}')
+            logging.error('Error creating the ids.json file: %s', error)
             exit()
 
 

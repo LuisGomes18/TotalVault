@@ -1,11 +1,10 @@
-from utils.id.load_ids import load_ids
+from utils.id.handle_id import load_ids
 import uuid
 import logging
 
 
-
 logging.basicConfig(
-    level=logging.INFO, 
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
